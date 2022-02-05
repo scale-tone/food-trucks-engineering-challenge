@@ -91,6 +91,8 @@ if(!$staticWebAppName) {
     $staticWebAppName = "food-trucks-static-web-app-$($resourceGroup.id.GetHashCode().toString('x'))"
 }
 
+Write-Host "###############################"
+
 $staticApp = az staticwebapp create `
     --name $staticWebAppName `
     --resource-group $resourceGroupName `
@@ -120,12 +122,21 @@ az staticwebapp appsettings set --name $staticWebAppName `
 Write-Host "The static web app $($staticWebAppName) was successfully deployed"
 Write-Host "Navigate to https://$($staticApp.defaultHostname) to see it in action"
 
+# Getting ids of existing documents
+$existingLocationIdsResponse = Invoke-RestMethod -Uri "https://$($searchServiceName).search.windows.net/indexes/$($searchIndexName)/docs?api-version=2020-06-30&search=*&%24select=locationid&%24top=1000" -Headers @{"api-key"=$adminKey}
+$existingLocationIds = @{}
+foreach ($v in $existingLocationIdsResponse.value) {
+    $existingLocationIds.Add($v.locationid, $v.locationid)
+}
+
 # Ingesting data into search index
 
 $trucksData = Invoke-RestMethod -Uri $truckCsvDataUrl | ConvertFrom-Csv
 
-foreach ($truck in $trucksData)
-{
+foreach ($truck in $trucksData) {
+
+    $existingLocationIds.Remove($truck.locationid)
+
     # Location field needs to be converted into GeoJSON format
     $locationField = [String]::Empty
     If (($truck.Longitude -ne 0) -and ($truck.Latitude -ne 0)) { 
@@ -158,6 +169,32 @@ foreach ($truck in $trucksData)
     Invoke-WebRequest -Uri "https://$($searchServiceName).search.windows.net/indexes/$($searchIndexName)/docs/index?api-version=2020-06-30" -Method POST -Body $json -ContentType "application/json" -Headers @{"api-key"=$adminKey}
 }
 
+# Removing trucks that do not exist anymore
+foreach($locationId in $existingLocationIds.keys) {
+
+    $json = "{value:[{ 
+        ""@search.action"": ""delete"",
+        locationid: ""$($locationid)""
+    }]}"
+
+    Invoke-WebRequest -Uri "https://$($searchServiceName).search.windows.net/indexes/$($searchIndexName)/docs/index?api-version=2020-06-30" -Method POST -Body $json -ContentType "application/json" -Headers @{"api-key"=$adminKey}
+}
+
 Write-Host "Finished ingesting trucks data"
-Write-Host "You should now be able to see it at https://$($staticApp.defaultHostname)"
-Write-Host "NOTE: it might take a few minutes for a Static Web App to finish its deployment. Please, be patient."
+
+# Waiting for the app to become available
+while($true){
+
+    Write-Host "Waiting for the app..."
+
+    try {
+
+        Invoke-WebRequest -Uri "https://$($staticApp.defaultHostname)/api/config-script"
+        break
+
+    } catch {
+        Start-Sleep -Seconds 1
+    }
+}
+
+Write-Host "You should now be able to use the app at https://$($staticApp.defaultHostname)"
