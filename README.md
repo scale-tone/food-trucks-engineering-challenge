@@ -121,3 +121,7 @@ By default there will be **no authentication** configured for your Static Web Ap
 - Intergration tests at the end of the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) could be more extensive. By far it only pings one single endpoint and doesn't even validate whether the search index is up and running.
 - Would be great to make the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) accept a [GitHub personal access token](https://docs.microsoft.com/en-us/azure/static-web-apps/publish-azure-resource-manager?tabs=azure-cli#create-a-github-personal-access-token), so that it can be run unattended (instead of requiring you to go through [GitHub Device Activation](https://github.com/login/device))
 - Client side needs to be migrated to latest versions of MobX and Material-UI. This would take some refactoring though, because they're backward-incompatible.
+
+## Final words
+
+If you like it, then don't hesitate to put a star on https://github.com/scale-tone/cognitive-search-static-web-apps-sample-ui
