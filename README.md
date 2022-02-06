@@ -43,10 +43,15 @@ As per prerequisites, you will need:
   
    IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
 
-   <img src="https://user-images.githubusercontent.com/5447190/152693351-19c4c993-f60b-4042-92ec-7f1f5c180943.png" width="700px"/>
+   <img src="https://user-images.githubusercontent.com/5447190/152693351-19c4c993-f60b-4042-92ec-7f1f5c180943.png" width="800px"/>
 
    Please, do what it asks you to.
 
 Apart from creating/updating Azure resources, the script also updates the search index with [latest trucks data](https://data.sfgov.org/api/views/rqzj-sfat/rows.csv). This can take a few minutes, so please be patient.
 
-Once done, the script will show you the URL of your newly created Azure Static Web App instance. Navigate to that URL with your browser and observe the app runnning.
+Once done, the script will show you the URL of your newly created Azure Static Web App instance: 
+
+  ![image](https://user-images.githubusercontent.com/5447190/152693969-0d4592b1-a4fd-482c-80f2-999b04aee4d7.png)
+
+
+Navigate to that URL with your browser and observe the app runnning.
