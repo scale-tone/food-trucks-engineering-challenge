@@ -17,7 +17,7 @@ This web app implements the so called *faceted search* user experience, whereas 
 
 The map is also interactive. Use the 'draw-rectangle' button in the lower-right corner to select rectangular regions on it:
 
-    <img src="https://raw.githubusercontent.com/scale-tone/food-trucks-engineering-challenge/master/public/screenshot2.gif"/>
+    ![video](https://raw.githubusercontent.com/scale-tone/food-trucks-engineering-challenge/master/public/screenshot2.gif?raw=true)
 
 Search result cards show generic info about a particular food truck/push cart, including the list of food items it offers. Items in this list are clickable, use them to narrow down your search to a specific type of food you enjoy the most. Clicking on a card brings up the 'Details' dialog with all the item's data shown on it.
 
