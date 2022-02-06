@@ -68,7 +68,12 @@ Alternatively, you can use [this ARM template](https://github.com/scale-tone/foo
 As per prerequisites, you will need:
 - [Node.js](https://nodejs.org/en).
 - [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools#installing) package installed **globally** (`npm i -g azure-functions-core-tools@3`).
-- A pre-created and pre-populated Azure Cognitive Search index. You can create it by running the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) like this: `./deploy.ps1 -skipDeployingStaticWebApp $true`.
+- A pre-created and pre-populated Azure Cognitive Search index. You can create it by running the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) like this: 
+    
+    ```
+      ./deploy.ps1 -skipDeployingStaticWebApp $true
+    ```
+    
 - An [Azure Maps account](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-manage-account-keys#create-a-new-account).
 
 Do the following:
