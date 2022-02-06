@@ -40,7 +40,7 @@ Do the following:
 2. Clone your fork onto your local devbox.
 3. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
     ```
-    ./deploy.ps
+    ./deploy.ps1
     ```
   
    IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
