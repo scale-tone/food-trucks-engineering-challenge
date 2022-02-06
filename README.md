@@ -89,5 +89,15 @@ Do the following:
     ```
     
     The code will be compiled and started at http://localhost:3000. A browser tab with that page should open up automatically, but if not, then navigate to http://localhost:3000 with your browser.
-    
- 
+
+## Implementation details
+
+Thanks to [MobX](https://mobx.js.org/README.html), this React app looks very much like a typical [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) app. It has a [hierarchy of state objects](https://github.com/scale-tone/food-trucks-engineering-challenge/tree/master/src/states) (aka viewmodels) and a corresponding [hierarchy of pure (stateless) React components](https://github.com/scale-tone/food-trucks-engineering-challenge/tree/master/src/components) (aka views). These two hierarchies are welded together at the root level [here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/index.tsx#L11). For example, [here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/states/SearchResultsState.ts) is the state object, that represents the list of search results, and [here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/components/SearchResults.tsx) is its markup.
+
+[HTTP GET requests](https://github.com/scale-tone/cognitive-search-static-web-apps-sample-ui/blob/master/src/states/DetailsDialogState.ts#L102) to Cognitive Search REST API are made by means of [axios](https://www.npmjs.com/package/axios). As mentioned before, they do not go directly to Cognitive Search, but are transparently proxied via [these Azure Proxies](https://github.com/scale-tone/cognitive-search-static-web-apps-sample-ui/blob/master/api/proxies.json) - this is where the **api-key** is being applied to them.
+
+The list of facets and their possible values on the left sidebar is [generated dynamically](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/states/FacetsState.ts#L15), based on **CognitiveSearchFacetFields** config value and results returned by Cognitive Search. The type of each faceted field (and the way it needs to be visualized) is also detected dynamically [here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/states/FacetState.ts#L49). Multiple faceted field types is currently supported already, and more support is coming.
+
+## Important note on authN/authZ
+
+By default there will be **no authentication** configured for your Static Web App instance, so anyone could potentially access it. You can then explicitly configure authN/authZ rules [as described here](https://docs.microsoft.com/en-us/azure/static-web-apps/authentication-authorization). E.g. to force every user to authenticate via AAD just add the following property: `"allowedRoles": [ "authenticated" ]` to the only one route that is currently defined in [routes.json](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/public/routes.json). Please remember though, that `authenticated` is a built-in role, which corresponds to anybody anyhow authenticated. To restrict the list of allowed users further, you will need to define and assign your own custom roles.
