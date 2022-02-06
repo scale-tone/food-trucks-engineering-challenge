@@ -228,7 +228,7 @@ if($staticApp) {
             break
 
         } catch {
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 3
         }
     }
 
