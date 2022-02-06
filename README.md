@@ -38,7 +38,7 @@ Do the following:
 
 1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
 2. Clone your fork onto your local devbox.
-3. Go to [the project folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
+3. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
     ```
     ./deploy.ps
     ```
@@ -55,9 +55,34 @@ Once done, the script will show you the URL of your newly created Azure Static W
 
   ![image](https://user-images.githubusercontent.com/5447190/152693969-0d4592b1-a4fd-482c-80f2-999b04aee4d7.png)
 
-
 Navigate to that URL with your browser and observe the app runnning.
 
 The deployment script has some optional parameters, that allow you to customize resource names and other things. See [the commments here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1#L1).
 
 Also, the script is idempotent. You can re-run it at any time, e.g. to re-populate the search index with latest data.
+
+Alternatively, you can use [this ARM template](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/arm-template.json) to deploy the Static Web App only, but in that case you need to have a search index already created (or reuse some existing one).
+
+## How to run locally on your devbox
+
+As per prerequisites, you will need:
+- [Node.js](https://nodejs.org/en).
+- [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools#installing) package installed **globally** (`npm i -g azure-functions-core-tools@3`).
+- A pre-created and pre-populated Azure Cognitive Search index. You can create it by running the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) like this: `./deploy.ps1 -skipDeployingStaticWebApp $true`.
+- An [Azure Maps account](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-manage-account-keys#create-a-new-account).
+
+Do the following:
+
+- Clone the sources onto your devbox.
+- Update the `SearchApiKey` and `AzureMapSubscriptionKey` settings in [/api/local.settings.json](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/api/local.settings.json) file with your key values.
+- Make sure these keys will never be committed.
+- Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and execute this:
+
+    ```
+    npm install
+    npm run start-with-backend
+    ```
+    
+    The code will be compiled and started at http://localhost:3000. A browser tab with that page should open up automatically, but if not, then navigate to http://localhost:3000 with your browser.
+    
+ 
