@@ -55,7 +55,7 @@ Once done, the script will show you the URL of your newly created Azure Static W
 
   ![image](https://user-images.githubusercontent.com/5447190/152693969-0d4592b1-a4fd-482c-80f2-999b04aee4d7.png)
 
-Navigate to that URL with your browser and observe the app runnning.
+Navigate to that URL with your browser and observe the app running.
 
 The deployment script has some optional parameters, that allow you to customize resource names and other things. See [the commments here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1#L1).
 
