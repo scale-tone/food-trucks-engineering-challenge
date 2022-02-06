@@ -8,3 +8,6 @@ This repo is basically a **fork of my own demo web UI for Azure Cognitive Search
 The application code here is almost identical to the code there (except for minor UI fixes).
 Yet it also includes [this deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1), which automatically creates all required Azure resources (an [Azure Cognitive Search index](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index), an [Azure Maps](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-manage-account-keys) account and an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/overview) instance) and also populates the index with data from https://data.sfgov.org/api/views/rqzj-sfat/rows.csv.
 
+## Live Demo
+
+[https://purple-forest-0da7f9603.azurestaticapps.net](https://purple-forest-0da7f9603.azurestaticapps.net/?search=%22evans%20ave%22&$filter=FoodItems/any(f:%20search.in(f,%20%27muffins|rice%20pudding%27,%20%27|%27)))
