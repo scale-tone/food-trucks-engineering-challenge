@@ -15,7 +15,9 @@ Yet it also includes [this deployment script](https://github.com/scale-tone/food
 
 This web app implements the so called *faceted search* user experience, whereas the user first enters some search phrase and then narrows down search resuls with facets on the left sidebar. Facets have different data types, and the app automatically detects and renders them accordingly. E.g. `FoodItems` is an array of strings, and you can pick up several values there, and also choose whether they should be combined with `OR` ('ANY OF') or `AND` ('ALL OF') logical operator. `X` and `Y` facets are numbers, so those are rendered as two-way sliders.
 
-The map is also interactive. Use the 'draw-rectangle' button in the lower-right corner to select rectangular regions on it.
+The map is also interactive. Use the 'draw-rectangle' button in the lower-right corner to select rectangular regions on it:
+
+    <img src="https://raw.githubusercontent.com/scale-tone/food-trucks-engineering-challenge/master/public/screenshot2.gif"/>
 
 Search result cards show generic info about a particular food truck/push cart, including the list of food items it offers. Items in this list are clickable, use them to narrow down your search to a specific type of food you enjoy the most. Clicking on a card brings up the 'Details' dialog with all the item's data shown on it.
 
