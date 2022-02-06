@@ -1,0 +1,24 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "FUNCTIONS_WORKER_RUNTIME": "node",
+
+        "SearchServiceName": "food-trucks-test",
+        "SearchIndexName": "food-trucks-index",
+        
+        "SearchApiKey": "@KeeShepherd(SearchApiKey)",
+        "AzureMapSubscriptionKey": "@KeeShepherd(AzureMapSubscriptionKey)",
+        
+        "CognitiveSearchKeyField":"locationid",
+        "CognitiveSearchNameField": "Applicant",
+        "CognitiveSearchGeoLocationField": "Location",
+        "CognitiveSearchOtherFields": "FoodItems,LocationDescription,FacilityType,dayshours",
+        "CognitiveSearchFacetFields": "FacilityType,FoodItems*,Status,block,lot,X,Y",
+        "CognitiveSearchTranscriptFields": "Applicant,LocationDescription,FoodItems,Status,dayshours",
+        "CognitiveSearchSuggesterName": ""
+    },
+    "Host": {
+        "CORS": "http://localhost:3000",
+        "CORSCredentials": true
+    }
+}

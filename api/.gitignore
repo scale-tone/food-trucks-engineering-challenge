@@ -91,4 +91,6 @@ out
 bin
 obj
 appsettings.json
-local.settings.json
+
+# Allowing to commit local.settings.json, so long as it does not contain secrets
+# local.settings.json

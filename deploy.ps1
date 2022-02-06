@@ -17,7 +17,10 @@ param (
     [string] $truckCsvDataUrl = "https://data.sfgov.org/api/views/rqzj-sfat/rows.csv",
 
     # URL of the GitHub repo with sources. If omitted, the git remote origin URL will be used.
-    [string] $gitHubRepoUrl
+    [string] $gitHubRepoUrl,
+
+    # Set this to $true, if you only need to create/update the search index
+    [bool] $skipDeployingStaticWebApp = $false
 )
 
 if( az group exists --name $resourceGroupName | ConvertFrom-Json) {
@@ -81,72 +84,76 @@ Invoke-WebRequest -Uri "https://$($searchServiceName).search.windows.net/indexes
 
 Write-Host "Search index $($searchIndexName) was created"
 
-# Choosing a unique Azure Maps account name
-if(!$mapsAccountName) {
+if(!$skipDeployingStaticWebApp) {
 
-    $mapsAccountName = "food-trucks-maps-account-$($resourceGroup.id.GetHashCode().toString('x'))"
-}
+    # Choosing a unique Azure Maps account name
+    if(!$mapsAccountName) {
 
-# Deploying Azure Maps account
-az maps account create --account-name $mapsAccountName --resource-group $resourceGroupName --sku S0 --accept-tos
-$mapsKey = (az maps account keys list --account-name $mapsAccountName --resource-group $resourceGroupName | ConvertFrom-Json).primaryKey
-
-# Deploying Static Web App instance
-
-If (!$gitHubRepoUrl) { 
-
-    # Trying to read and use the git remote origin url
-    $gitHubRepoUrl = git config --get remote.origin.url
-
-    if($gitHubRepoUrl -match '.git$') {
-
-        $gitHubRepoUrl = $gitHubRepoUrl.Substring(0, $gitHubRepoUrl.Length - 4)
+        $mapsAccountName = "food-trucks-maps-account-$($resourceGroup.id.GetHashCode().toString('x'))"
     }
+
+    # Deploying Azure Maps account
+    az maps account create --account-name $mapsAccountName --resource-group $resourceGroupName --sku S0 --accept-tos
+    $mapsKey = (az maps account keys list --account-name $mapsAccountName --resource-group $resourceGroupName | ConvertFrom-Json).primaryKey
+
+    # Deploying Static Web App instance
+
+    If (!$gitHubRepoUrl) { 
+
+        # Trying to read and use the git remote origin url
+        $gitHubRepoUrl = git config --get remote.origin.url
+
+        if($gitHubRepoUrl -match '.git$') {
+
+            $gitHubRepoUrl = $gitHubRepoUrl.Substring(0, $gitHubRepoUrl.Length - 4)
+        }
+    }
+
+    If (!$gitHubRepoUrl) { 
+
+        Write-Error "Failed to determine the GiHub repo URL to deploy code from. Specify it explicitly via -gitHubRepoUrl parameter."
+        return
+    }
+
+    # Choosing a unique Static Web App instance name
+    if(!$staticWebAppName) {
+
+        $staticWebAppName = "food-trucks-static-web-app-$($resourceGroup.id.GetHashCode().toString('x'))"
+    }
+
+    Write-Host "Deploying $($staticWebAppName) from $($gitHubRepoUrl)"
+    Write-Host "###############################"
+
+    $staticApp = az staticwebapp create `
+        --name $staticWebAppName `
+        --resource-group $resourceGroupName `
+        --location $resourceGroup.location `
+        --sku Standard `
+        --source $gitHubRepoUrl `
+        --branch master `
+        --app-location "/" `
+        --api-location "api" `
+        --output-location "build" `
+        --login-with-github `
+        | ConvertFrom-Json
+
+    az staticwebapp appsettings set --name $staticWebAppName `
+        --setting-names `
+            SearchServiceName=$searchServiceName `
+            SearchIndexName=$searchIndexName `
+            SearchApiKey=$queryKey `
+            AzureMapSubscriptionKey=$mapsKey `
+            CognitiveSearchKeyField=locationid `
+            CognitiveSearchNameField=Applicant `
+            CognitiveSearchGeoLocationField=Location `
+            CognitiveSearchOtherFields=FoodItems,LocationDescription,FacilityType,dayshours `
+            CognitiveSearchFacetFields=FacilityType,FoodItems*,Status,block,lot,X,Y `
+            CognitiveSearchTranscriptFields=Applicant,LocationDescription,FoodItems,Status,dayshours
+
+    Write-Host "The static web app $($staticWebAppName) was successfully deployed"
+    Write-Host "Navigate to https://$($staticApp.defaultHostname) to see it in action"
+
 }
-
-If (!$gitHubRepoUrl) { 
-
-    Write-Error "Failed to determine the GiHub repo URL to deploy code from. Specify it explicitly via -gitHubRepoUrl parameter."
-    return
-}
-
-# Choosing a unique Static Web App instance name
-if(!$staticWebAppName) {
-
-    $staticWebAppName = "food-trucks-static-web-app-$($resourceGroup.id.GetHashCode().toString('x'))"
-}
-
-Write-Host "Deploying $($staticWebAppName) from $($gitHubRepoUrl)"
-Write-Host "###############################"
-
-$staticApp = az staticwebapp create `
-    --name $staticWebAppName `
-    --resource-group $resourceGroupName `
-    --location $resourceGroup.location `
-    --sku Standard `
-    --source $gitHubRepoUrl `
-    --branch master `
-    --app-location "/" `
-    --api-location "api" `
-    --output-location "build" `
-    --login-with-github `
-    | ConvertFrom-Json
-
-az staticwebapp appsettings set --name $staticWebAppName `
-    --setting-names `
-        SearchServiceName=$searchServiceName `
-        SearchIndexName=$searchIndexName `
-        SearchApiKey=$queryKey `
-        AzureMapSubscriptionKey=$mapsKey `
-        CognitiveSearchKeyField=locationid `
-        CognitiveSearchNameField=Applicant `
-        CognitiveSearchGeoLocationField=Location `
-        CognitiveSearchOtherFields=FoodItems,LocationDescription,FacilityType,dayshours `
-        CognitiveSearchFacetFields=FacilityType,FoodItems*,Status,block,lot,X,Y `
-        CognitiveSearchTranscriptFields=Applicant,LocationDescription,FoodItems,Status,dayshours
-
-Write-Host "The static web app $($staticWebAppName) was successfully deployed"
-Write-Host "Navigate to https://$($staticApp.defaultHostname) to see it in action"
 
 # Getting ids of existing documents
 $existingLocationIdsResponse = Invoke-RestMethod -Uri "https://$($searchServiceName).search.windows.net/indexes/$($searchIndexName)/docs?api-version=2020-06-30&search=*&%24select=locationid&%24top=1000" -Headers @{"api-key"=$adminKey}
@@ -208,19 +215,22 @@ foreach($locationId in $existingLocationIds.keys) {
 
 Write-Host "Finished ingesting trucks data"
 
-# Waiting for the app to become available
-while($true){
+if($staticApp) {
 
-    Write-Host "Waiting for the app..."
+    # Waiting for the app to become available
+    while($true){
 
-    try {
+        Write-Host "Waiting for the app..."
 
-        Invoke-WebRequest -Uri "https://$($staticApp.defaultHostname)/api/config-script"
-        break
+        try {
 
-    } catch {
-        Start-Sleep -Seconds 1
+            Invoke-WebRequest -Uri "https://$($staticApp.defaultHostname)/api/config-script"
+            break
+
+        } catch {
+            Start-Sleep -Seconds 1
+        }
     }
-}
 
-Write-Host "You should now be able to use the app at https://$($staticApp.defaultHostname)"
+    Write-Host "You should now be able to use the app at https://$($staticApp.defaultHostname)"
+}

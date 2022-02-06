@@ -46,52 +46,6 @@
             "metadata": {
                 "description": "Ssubscription key for your Azure Maps account (Azure Maps is used for visualizing geolocation data). This value is optional. If not specified, the map will not be shown."
             }
-        },
-
-        "cognitiveSearchKeyField": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the field in your search index, that uniquely identifies a document. E.g. 'HotelId'."
-            }
-        },
-        "cognitiveSearchNameField": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the field in your search index, that contains a short document title. E.g. 'HotelName'. You can also put a comma-delimited list of field names here, e.g. 'HotelName,Address'"
-            }
-        },
-        "cognitiveSearchGeoLocationField": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Name of the field in your search index, that contains geo coordinates for each document. E.g. 'Location'. The field type must be 'Edm.GeographyPoint'"
-            }
-        },
-        "cognitiveSearchOtherFields": {
-            "type": "string",
-            "metadata": {
-                "description": "Comma-separated list of other fields to be shown on search result cards. E.g. 'Tags,Description,Description_fr,Category,LastRenovationDate'"
-            }
-        },
-        "cognitiveSearchFacetFields": {
-            "type": "string",
-            "metadata": {
-                "description": "Comma-separated list of fields to be shown as facets on the left sidebar. If a field is an array-type field, append trailing star ('*') to its name. E.g. 'Tags*,Rating,Category,ParkingIncluded,LastRenovationDate1. All these fields must be facetable and filterable."
-            }
-        },
-        "cognitiveSearchTranscriptFields": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Comma-separated list of fields to be shown on the 'Transcript' tab of the Details dialog. E.g. 'HotelName,Description,Description_fr'. All these fields must be searchable. If not specified, that tab will simply show all string-type fields and get hit highlights from the search string."
-            }
-        },
-        "CognitiveSearchSuggesterName": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Optional name of the autocomplete suggester to be used. E.g. 'sg'. Create and configure a suggester for your search index and put its name here - then the search query textbox will start showing suggestions as you type."
-            }
         }
     },
     "resources": [
@@ -127,13 +81,13 @@
                         "SearchIndexName": "[parameters('searchIndexName')]",
                         "SearchApiKey": "[parameters('searchApiKey')]",
                         "AzureMapSubscriptionKey": "[parameters('azureMapSubscriptionKey')]",
-                        "CognitiveSearchKeyField": "[parameters('cognitiveSearchKeyField')]",
-                        "CognitiveSearchNameField": "[parameters('cognitiveSearchNameField')]",
-                        "CognitiveSearchGeoLocationField": "[parameters('cognitiveSearchGeoLocationField')]",
-                        "CognitiveSearchOtherFields": "[parameters('cognitiveSearchOtherFields')]",
-                        "CognitiveSearchFacetFields": "[parameters('cognitiveSearchFacetFields')]",
-                        "CognitiveSearchTranscriptFields": "[parameters('cognitiveSearchTranscriptFields')]",
-                        "CognitiveSearchSuggesterName": "[parameters('cognitiveSearchSuggesterName')]"
+                        "CognitiveSearchKeyField": "locationid",
+                        "CognitiveSearchNameField": "Applicant",
+                        "CognitiveSearchGeoLocationField": "Location",
+                        "CognitiveSearchOtherFields": "FoodItems,LocationDescription,FacilityType,dayshours",
+                        "CognitiveSearchFacetFields": "FacilityType,FoodItems*,Status,block,lot,X,Y",
+                        "CognitiveSearchTranscriptFields": "Applicant,LocationDescription,FoodItems,Status,dayshours",
+                        "CognitiveSearchSuggesterName": ""
                     },
 
                     "dependsOn": [
