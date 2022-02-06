@@ -6,6 +6,7 @@ Your guide into [the world of food trucks of San Francisco](https://data.sfgov.o
 
 This repo is basically a **fork of my own demo web UI for Azure Cognitive Search** - https://github.com/scale-tone/cognitive-search-static-web-apps-sample-ui.
 The application code here is almost identical to the code there (except for minor UI fixes).
+
 Yet it also includes [this deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1), which automatically creates all required Azure resources (an [Azure Cognitive Search index](https://docs.microsoft.com/en-us/azure/search/search-what-is-an-index), an [Azure Maps](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-manage-account-keys) account and an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/overview) instance) and also populates the index with data from https://data.sfgov.org/api/views/rqzj-sfat/rows.csv.
 
 ## Live Demo
@@ -21,3 +22,30 @@ Search result cards show generic info about a particular food truck/push cart, i
 The list of search results supports infinite scrolling.
 
 Also, all the search parameters are reflected in the browser's address bar, making your searches easily shareable.
+
+## How to deploy to Azure
+
+As per prerequisites, you will need:
+
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), >>> **version 2.33.0 or later** <<< (earlier versions might fail to deploy Static Web Apps).
+- [Powershell](https://docs.microsoft.com/en-us/powershell/).
+- You need to be logged in into Azure: 
+  ```
+  az login
+  ```
+
+1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
+2. Clone your fork onto your local devbox.
+3. Go to [the project folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
+  ```
+  ./deploy.ps
+  ```
+IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
+
+![image](https://user-images.githubusercontent.com/5447190/152693351-19c4c993-f60b-4042-92ec-7f1f5c180943.png)
+
+Please, do what it asks you to.
+
+Apart from creating/updating Azure resources, the script also updates the search index with [latest trucks data](https://data.sfgov.org/api/views/rqzj-sfat/rows.csv). This can take a few minutes, so please be patient.
+
+Once done, the script will show you the URL of your newly created Azure Static Web App instance. Navigate to that URL with your browser and observe the app runnning.
