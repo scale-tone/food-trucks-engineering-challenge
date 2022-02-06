@@ -34,6 +34,8 @@ As per prerequisites, you will need:
   az login
   ```
 
+Do the following:
+
 1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
 2. Clone your fork onto your local devbox.
 3. Go to [the project folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
@@ -55,3 +57,7 @@ Once done, the script will show you the URL of your newly created Azure Static W
 
 
 Navigate to that URL with your browser and observe the app runnning.
+
+The deployment script has some optional parameters, that allow you to customize resource names and other things. See [the commments here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1#L1).
+
+Also, the script is idempotent. You can re-run it at any time, e.g. to re-populate the search index with latest data.
