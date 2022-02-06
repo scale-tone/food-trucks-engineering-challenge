@@ -38,7 +38,7 @@ Do the following:
 
 1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
 2. Clone your fork onto your local devbox.
-3. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
+3. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the included [Powershell deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
     ```
     ./deploy.ps1
     ```
@@ -97,6 +97,8 @@ The code here is a typical React- and TypeScript-based Single-Page Application (
 The list of facets and their possible values on the left sidebar is [generated dynamically](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/states/FacetsState.ts#L15), based on **CognitiveSearchFacetFields** config value and results returned by Cognitive Search. The type of each faceted field (and the way it needs to be visualized) is also detected dynamically [here](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/src/states/FacetState.ts#L49).
 
 The app doesn't have a backend as such. Instead, all requests to the underlying search index are proxied via [this set of Azure Function proxies](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/api/proxies.json#L1), where the Cognitive Search **api-key** is appended to each request. This ensures that the **api-key** is never exposed to the public and at the same time greatly simplifies the architecture.
+
+The decision to implement deployment via a script was heavily influenced by the need to pre-populate the search index with data (which needs to be re-formatted beforehand). If not for that, then all the required resources could instead be deployed with an [ARM template](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/arm-template.json).
 
 ## Important note on authN/authZ
 
