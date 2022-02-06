@@ -61,13 +61,14 @@ export class SearchResultsMap extends React.Component<{ state: MapResultsState, 
                         // Corresponds to SearchResult.name field
                         textField: ['get', 'name'],
                         offset: [0, 1.2],
-                        size: 12,
-                        optional: true
+                        size: 14,
+                        optional: true,
+                        color: '#ef4c4c'
                     },
                     iconOptions: {
                         allowOverlap: true,
                         ignorePlacement: true,
-                        size: 0.5,
+                        size: 0.8,
                         image: 'pin-round-red'
                     }
                 }

@@ -1,9 +1,22 @@
 param (
+    # Resource group to put all resources into. Must be in one of the following locations: "westus2","centralus","eastus2","westeurope","eastasia", 
+    # because the created resources will inherit its location, and Static Web Apps are only supported in these ones, as of today. 
+    # If doesn't exist, a new resource group will be created in westeurope.
     [string] $resourceGroupName = "food-trucks-rg",
+
+    # Name for the Static Web App instance to be created. If omitted, a resource group-specific unique name will be generated.
     [string] $staticWebAppName,
+
+    # Name for the Azure Maps account to be created. If omitted, a resource group-specific unique name will be generated.
     [string] $mapsAccountName,
+
+    # Name for the Azure Cognitive Search service instance to be created. If omitted, a resource group-specific unique name will be generated.
     [string] $searchServiceName,
+
+    # URL of the CSV file with food trucks source data. This data will be ingested into the newly created search index.
     [string] $truckCsvDataUrl = "https://data.sfgov.org/api/views/rqzj-sfat/rows.csv",
+
+    # URL of the GitHub repo with sources. If omitted, the git remote origin URL will be used.
     [string] $gitHubRepoUrl
 )
 
@@ -54,9 +67,16 @@ $searchIndexName = "food-trucks-index"
 
 # Creating the search index
 
+$indexDefinitionJsonFileName = 'index-definition.json'
+if(!(Test-Path $indexDefinitionJsonFileName)) {
+
+    Write-Error "Couldn't find the $($indexDefinitionJsonFileName) file. Make sure you're running this script from project folder."
+    return
+}
+
 Write-Host "Creating the search index..."
 
-$indexDefinition = Get-Content 'index-definition.json' | Out-String
+$indexDefinition = Get-Content $indexDefinitionJsonFileName | Out-String
 Invoke-WebRequest -Uri "https://$($searchServiceName).search.windows.net/indexes?api-version=2020-06-30" -Method POST -Body $indexDefinition -ContentType "application/json" -Headers @{"api-key"=$adminKey}
 
 Write-Host "Search index $($searchIndexName) was created"
@@ -71,7 +91,6 @@ if(!$mapsAccountName) {
 az maps account create --account-name $mapsAccountName --resource-group $resourceGroupName --sku S0 --accept-tos
 $mapsKey = (az maps account keys list --account-name $mapsAccountName --resource-group $resourceGroupName | ConvertFrom-Json).primaryKey
 
-
 # Deploying Static Web App instance
 
 If (!$gitHubRepoUrl) { 
@@ -85,12 +104,19 @@ If (!$gitHubRepoUrl) {
     }
 }
 
+If (!$gitHubRepoUrl) { 
+
+    Write-Error "Failed to determine the GiHub repo URL to deploy code from. Specify it explicitly via -gitHubRepoUrl parameter."
+    return
+}
+
 # Choosing a unique Static Web App instance name
 if(!$staticWebAppName) {
 
     $staticWebAppName = "food-trucks-static-web-app-$($resourceGroup.id.GetHashCode().toString('x'))"
 }
 
+Write-Host "Deploying $($staticWebAppName) from $($gitHubRepoUrl)"
 Write-Host "###############################"
 
 $staticApp = az staticwebapp create `
@@ -115,7 +141,7 @@ az staticwebapp appsettings set --name $staticWebAppName `
         CognitiveSearchKeyField=locationid `
         CognitiveSearchNameField=Applicant `
         CognitiveSearchGeoLocationField=Location `
-        CognitiveSearchOtherFields=FoodItems,LocationDescription,dayshours `
+        CognitiveSearchOtherFields=FoodItems,LocationDescription,FacilityType,dayshours `
         CognitiveSearchFacetFields=FacilityType,FoodItems*,Status,block,lot,X,Y `
         CognitiveSearchTranscriptFields=Applicant,LocationDescription,FoodItems,Status,dayshours
 

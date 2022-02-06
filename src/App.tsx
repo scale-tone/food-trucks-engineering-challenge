@@ -37,7 +37,7 @@ export default class App extends React.Component<{ state: AppState }> {
                         <img src={logo} width="30px" alt=""/>
                         <Box width={15} />
                         <Typography variant="h4" color="inherit">
-                            Cognitive Search Demo
+                            Food Trucks Demo
                         </Typography>
                         
                     </>) : (<>
@@ -48,7 +48,7 @@ export default class App extends React.Component<{ state: AppState }> {
                         <Box width={15} />
                         <Link href="/" color="inherit">
                             <TitleTypography variant="h6" color="inherit">
-                                    Cognitive Search Demo
+                                Food Trucks Demo
                             </TitleTypography>
                         </Link>
                         <Box width={15} />

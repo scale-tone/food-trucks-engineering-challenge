@@ -2,9 +2,11 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import styled from 'styled-components';
 import { Avatar, Card, Chip, CardHeader, CardContent, Grid, Link, LinearProgress, Typography } from '@material-ui/core';
-import FolderIcon from '@material-ui/icons/Folder';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import { SearchResultsState } from '../states/SearchResultsState';
+import { FacilityTypeEnum } from '../states/SearchResult';
 
 // List of search results
 @observer
@@ -43,7 +45,9 @@ export class SearchResults extends React.Component<{ state: SearchResultsState, 
                         <CardHeader
                             avatar={
                                 <Link onClick={() => state.showDetails(item)}>
-                                    <Avatar><FolderIcon /></Avatar>
+                                    <Avatar>
+                                        {item.facilityType === FacilityTypeEnum.PushCart ?  (<ShoppingCartIcon/>) : (<LocalShippingIcon/>)}
+                                    </Avatar>
                                 </Link>
                             }
                             title={<Link variant="h6" onClick={() => state.showDetails(item)}>{item.name}</Link>}

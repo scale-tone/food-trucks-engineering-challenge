@@ -38,7 +38,7 @@ export class AppState {
         
         this.parseAndApplyQueryString();
 
-        document.title = `Cognitive Search Demo - ${this.serverSideConfig.SearchServiceName}/${this.serverSideConfig.SearchIndexName}`;
+        document.title = `Food Trucks Demo - ${this.serverSideConfig.SearchServiceName}/${this.serverSideConfig.SearchIndexName}`;
     }
 
     // Shows Details dialog

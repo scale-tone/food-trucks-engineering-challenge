@@ -1,6 +1,11 @@
 import { isValidFacetValue } from './FacetValueState';
 import { IServerSideConfig } from './ServerSideConfig';
 
+export enum FacilityTypeEnum {
+    Truck = 0,
+    PushCart
+}
+
 // Maps raw search results. 
 export class SearchResult {
 
@@ -11,6 +16,7 @@ export class SearchResult {
     readonly coordinates: number[];
     readonly otherFields: string[] = [];
     readonly highlightedWords: string[] = [];
+    readonly facilityType: FacilityTypeEnum = FacilityTypeEnum.Truck;
     
     constructor(rawResult: any, private _config: IServerSideConfig) {
 
@@ -22,6 +28,10 @@ export class SearchResult {
             .split(',')
             .map(fieldName => rawResult[fieldName])
             .join(',');
+        
+        if (rawResult['FacilityType'] === 'Push Cart') {
+            this.facilityType = FacilityTypeEnum.PushCart;
+        }
         
         // Collecting other fields
         for (var fieldName of this._config.CognitiveSearchOtherFields.split(',').filter(f => !!f)) {
