@@ -49,6 +49,8 @@ Do the following:
 
    Please, do what it asks you to.
 
+All the deployed Azure resources will be placed into the same resource group (by default, it will be called 'food-trucks-rg'). Don't forget to cleanup those resources once you're done with them.
+
 Apart from creating/updating Azure resources, the script also updates the search index with [latest trucks data](https://data.sfgov.org/api/views/rqzj-sfat/rows.csv). This can take a few minutes, so please be patient.
 
 Once done, the script will show you the URL of your newly created Azure Static Web App instance: 
