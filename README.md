@@ -37,9 +37,9 @@ As per prerequisites, you will need:
 1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
 2. Clone your fork onto your local devbox.
 3. Go to [the project folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the [deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
-  ```
-  ./deploy.ps
-  ```
+    ```
+    ./deploy.ps
+    ```
   
    IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
 
