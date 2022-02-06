@@ -40,11 +40,12 @@ As per prerequisites, you will need:
   ```
   ./deploy.ps
   ```
-  IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
+  
+    IMPORTANT: at some point the script will pause and wait for you to login into GitHub:
 
-  <img src="https://user-images.githubusercontent.com/5447190/152693351-19c4c993-f60b-4042-92ec-7f1f5c180943.png" width="700px"/>
+    <img src="https://user-images.githubusercontent.com/5447190/152693351-19c4c993-f60b-4042-92ec-7f1f5c180943.png" width="700px"/>
 
-  Please, do what it asks you to.
+    Please, do what it asks you to.
 
 Apart from creating/updating Azure resources, the script also updates the search index with [latest trucks data](https://data.sfgov.org/api/views/rqzj-sfat/rows.csv). This can take a few minutes, so please be patient.
 
