@@ -39,8 +39,12 @@ As per prerequisites, you will need:
 Do the following:
 
 1. **Fork** this repo (cloning is not enough, because Static Web Apps deployment process needs write access to your GitHub repo).
-2. Clone your fork onto your local devbox.
-3. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the included [Powershell deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
+2. Make sure GitHub Actions are enabled for your newly forked repo:
+
+    <img src="https://user-images.githubusercontent.com/5447190/152656025-7fecc05e-2c30-4e89-8a39-9b6f65ed317e.png" width="600px"/>
+
+3. Clone your fork onto your local devbox.
+4. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and run the included [Powershell deployment script](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/deploy.ps1) from there:
     ```
     ./deploy.ps1
     ```
@@ -82,10 +86,10 @@ As per prerequisites, you will need:
 
 Do the following:
 
-- Clone the sources onto your devbox.
-- Update the `SearchApiKey` and `AzureMapSubscriptionKey` settings in [/api/local.settings.json](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/api/local.settings.json) file with your key values.
-- Make sure these keys will never be committed.
-- Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and execute this:
+1. Clone the sources onto your devbox.
+2. Update the `SearchApiKey` and `AzureMapSubscriptionKey` settings in [/api/local.settings.json](https://github.com/scale-tone/food-trucks-engineering-challenge/blob/master/api/local.settings.json) file with your key values.
+3. Make sure these keys will never be committed.
+4. Go to the [project root folder](https://github.com/scale-tone/food-trucks-engineering-challenge) and execute this:
 
     ```
     npm install
