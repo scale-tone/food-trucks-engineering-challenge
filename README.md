@@ -117,6 +117,7 @@ By default there will be **no authentication** configured for your Static Web Ap
 - There's an [ongoing DNS issue with Static Web Apps](https://github.com/Azure/static-web-apps/issues/713), whereas newly created instances might not be reachable. This seems to be very specific to the internet provider you use. If the app instance doesn't respond, try switching to another (e.g. mobile) network.
 - Static Web App deployments depend on GitHub Actions. GitHub Actions tend to be down from time to time. If the app fails to be deployed, check the current status of GitHub Actions.
 - When using a GitHub Codespace as a devbox, there can be CORS-related problems. Please, don't run this on a GitHub Codespace.
+- Microsoft Defender might severely impede performance of Node.js-based applications, especially at first run (because it scans all the node_modules and everything). If you run this code on your devbox and it is not starting for minutes - well, again, just be patient.
 
 ## What could be done better
 
