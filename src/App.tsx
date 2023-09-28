@@ -85,10 +85,10 @@ export default class App extends React.Component<{ state: AppState }> {
 
             </LandingDiv>) : (<>
 
-                <Sidebar>
+{/*                 <Sidebar>
                     <Facets state={state.searchResultsState.facetsState} inProgress={state.inProgress} />
                 </Sidebar>
-
+ */}
                 <Main>
                     {!!state.mapResultsState && (
                             <SearchResultsMap

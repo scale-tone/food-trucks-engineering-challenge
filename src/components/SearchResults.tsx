@@ -29,8 +29,6 @@ export class SearchResults extends React.Component<{ state: SearchResultsState, 
                 this.props.state.loadMoreResults();
             }
         });
-
-
     }
 
     render(): JSX.Element {
