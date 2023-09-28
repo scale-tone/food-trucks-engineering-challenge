@@ -11,7 +11,6 @@ import { SearchResultsMap } from './components/SearchResultsMap';
 import { SearchResults } from './components/SearchResults';
 import { FilterSummaryBox } from './components/FilterSummaryBox';
 import { SearchTextBox } from './components/SearchTextBox';
-import { Facets } from './components/Facets';
 import { DetailsDialog } from './components/DetailsDialog';
 import { LoginIcon } from './components/LoginIcon';
 
@@ -85,10 +84,6 @@ export default class App extends React.Component<{ state: AppState }> {
 
             </LandingDiv>) : (<>
 
-{/*                 <Sidebar>
-                    <Facets state={state.searchResultsState.facetsState} inProgress={state.inProgress} />
-                </Sidebar>
- */}
                 <Main>
                     {!!state.mapResultsState && (
                             <SearchResultsMap
@@ -114,11 +109,6 @@ export default class App extends React.Component<{ state: AppState }> {
 const BottomBar: typeof AppBar = styled(AppBar)({
     top: 'auto',
     bottom: 0
-})
-
-const Sidebar = styled.div({
-    width: SidebarWidth,
-    float: 'left',
 })
 
 const Main = styled.div({
