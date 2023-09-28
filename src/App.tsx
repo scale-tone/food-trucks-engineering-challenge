@@ -119,6 +119,7 @@ const BottomBar: typeof AppBar = styled(AppBar)({
 const Sidebar = styled.div({
     width: SidebarWidth,
     float: 'left',
+    display: 'none'
 })
 
 const Main = styled.div({
